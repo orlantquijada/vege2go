@@ -4,9 +4,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "db:push": "turbo -F @repo/db push",
-    "db:migrate": "turbo -F @repo/db migrate",
-    "db:studio": "turbo -F @repo/db studio",
+    "api:deploy": "turbo run deploy",
     "lint": "turbo run lint",
     "format": "biome check --write",
     "typecheck": "turbo run typecheck",

@@ -12,6 +12,8 @@ const { app, start } = createServer();
 if (process.env.NODE_ENV === "development") {
 	start();
 }
+// __AUTO_GENERATED_PRINT_VAR_START__
+console.log("if process.env.NODE_ENV: %s", process.env.NODE_ENV); // __AUTO_GENERATED_PRINT_VAR_END__
 
 export default async (req: VercelRequest, res: VercelResponse) => {
 	await app.ready();

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "pnpm with-env tsup --onSuccess \"node ./dist/index.js\"",
     "with-env": "dotenv -e ../../.env --",
-    "build": "tsup",
+    "build": "pnpm with-env tsup",
+    "deploy": "pnpm build",
     "start": "node dist/index.js"
   },
   "dependencies": {
