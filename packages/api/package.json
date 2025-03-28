@@ -1,0 +1,32 @@
+{
+	"name": "@repo/api",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"default": "./src/index.ts"
+		}
+	},
+	"scripts": {
+		"dev": "tsup --watch",
+		"build": "tsup",
+		"lint": "biome check --write",
+		"typecheck": "tsc --noEmit --emitDeclarationOnly false"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@tsconfig/node-lts": "catalog:",
+		"@tsconfig/node-ts": "catalog:",
+		"@types/node": "catalog:",
+		"tsup": "catalog:",
+		"typescript": "catalog:"
+	},
+	"dependencies": {
+		"@repo/db": "workspace:*",
+		"@trpc/server": "catalog:",
+		"superjson": "catalog:",
+		"valibot": "catalog:"
+	}
+}

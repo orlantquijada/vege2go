@@ -1,0 +1,19 @@
+{
+	"name": "@repo/{{ name }}",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"lint": "biome check --write",
+		"typecheck": "tsc --noEmit --emitDeclarationOnly false"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@tsconfig/node-lts": "catalog:",
+		"@tsconfig/node-ts": "catalog:",
+		"typescript": "catalog:"
+	}
+}

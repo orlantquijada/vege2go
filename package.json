@@ -1,0 +1,22 @@
+{
+  "name": "vege2go",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "db:push": "turbo -F @repo/db push",
+    "db:migrate": "turbo -F @repo/db migrate",
+    "db:studio": "turbo -F @repo/db studio",
+    "lint": "turbo run lint",
+    "format": "biome check --write",
+    "typecheck": "turbo run typecheck",
+    "lint:ws": "pnpm dlx sherif@latest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@turbo/gen": "^2.4.4",
+    "turbo": "^2.4.4",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@10.7.0"
+}

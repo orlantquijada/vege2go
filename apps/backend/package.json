@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm with-env tsup --onSuccess \"node ./dist/index.js\"",
+    "with-env": "dotenv -e ../../.env --",
+    "build": "tsup",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.0.1",
+    "@repo/api": "workspace:*",
+    "@repo/db": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "@trpc/server": "catalog:",
+    "fastify": "^5.2.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@tsconfig/node-lts": "catalog:",
+    "@tsconfig/node-ts": "catalog:",
+    "@types/node": "catalog:",
+    "@vercel/node": "^5.1.14",
+    "dotenv-cli": "catalog:",
+    "tsup": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}
