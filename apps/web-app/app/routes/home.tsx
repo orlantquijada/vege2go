@@ -1,5 +1,4 @@
-import { attempt, formatShortDate } from "@repo/utils";
-import * as v from "valibot";
+import { formatShortDate } from "@repo/utils";
 import { api } from "~/utils/api";
 import type { Route } from "./+types/home";
 
@@ -19,25 +18,31 @@ export default function Home() {
 
 	return (
 		<main>
-			<h1>Vege2Go</h1>
-			<p>{posts.data?.length}</p>
-			<ul>
-				{posts.data?.map((post) => (
-					<li key={post.id}>
-						<p>{post.title}</p>
-						<p>{formatShortDate(post.createdAt)}</p>
-					</li>
-				))}
-			</ul>
+			<h1 className="text-lg">Vege2Go</h1>
+			<div className="mt-4">
+				<p className="font-semibold">Posts</p>
+				<ol>
+					{posts.data?.map((post) => (
+						<li key={post.id}>
+							<span>{post.title}</span> ·{" "}
+							<span>{formatShortDate(post.createdAt)}</span>
+						</li>
+					))}
+				</ol>
+			</div>
 
 			{firstPost.data && (
-				<li key={firstPost.data.id}>
-					<p>{firstPost.data.title}</p>
-					<p>{formatShortDate(firstPost.data.createdAt)}</p>
-				</li>
+				<div className="mt-4">
+					<p className="font-semibold">First Post</p>
+					<div key={firstPost.data.id}>
+						<span>{firstPost.data.title}</span> ·{" "}
+						<span>{formatShortDate(firstPost.data.createdAt)}</span>
+					</div>
+				</div>
 			)}
 
 			<button
+				className="mt-4 h-9 px-4 bg-neutral-50 text-neutral-800 rounded-md"
 				type="button"
 				onClick={() => {
 					createPost.mutate(
