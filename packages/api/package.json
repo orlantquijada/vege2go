@@ -3,6 +3,8 @@
 	"private": true,
 	"version": "0.1.0",
 	"type": "module",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
@@ -17,6 +19,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
+		"@repo/db": "workspace:*",
 		"@tsconfig/node-lts": "catalog:",
 		"@tsconfig/node-ts": "catalog:",
 		"@types/node": "catalog:",
@@ -24,7 +27,6 @@
 		"typescript": "catalog:"
 	},
 	"dependencies": {
-		"@repo/db": "workspace:*",
 		"@trpc/server": "catalog:",
 		"superjson": "catalog:",
 		"valibot": "catalog:"

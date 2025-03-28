@@ -12,8 +12,6 @@ const { app, start } = createServer();
 if (process.env.NODE_ENV === "development") {
 	start();
 }
-// __AUTO_GENERATED_PRINT_VAR_START__
-console.log("if process.env.NODE_ENV: %s", process.env.NODE_ENV); // __AUTO_GENERATED_PRINT_VAR_END__
 
 export default async (req: VercelRequest, res: VercelResponse) => {
 	await app.ready();
@@ -24,6 +22,13 @@ function createServer() {
 	const app = fastify({
 		maxParamLength: 5000,
 		logger: true,
+	});
+
+	app.register(cors, {
+		origin:
+			process.env.NODE_ENV === "development"
+				? "*"
+				: ["https://vege2go-web-app.vercel.app"],
 	});
 
 	app.register(fastifyTRPCPlugin, {
@@ -44,10 +49,6 @@ function createServer() {
 
 	app.get("/posts", async () => {
 		return db.select().from(Post);
-	});
-
-	app.register(cors, {
-		origin: "*",
 	});
 
 	const stop = () => app.close();

@@ -184,9 +184,6 @@ importers:
 
   packages/api:
     dependencies:
-      '@repo/db':
-        specifier: workspace:*
-        version: link:../db
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.0.0(typescript@5.8.2)
@@ -200,6 +197,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 1.9.4
+      '@repo/db':
+        specifier: workspace:*
+        version: link:../db
       '@tsconfig/node-lts':
         specifier: 'catalog:'
         version: 22.0.1
