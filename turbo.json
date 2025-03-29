@@ -6,6 +6,7 @@
   "ui": "tui",
   "tasks": {
     "build": {
+      "persistent": false,
       "dependsOn": [
         "^build"
       ],

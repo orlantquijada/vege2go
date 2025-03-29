@@ -1,7 +1,8 @@
 ## Things to install
 1. [mise](https://mise.jdx.dev/)
 2. [pnpm](https://pnpm.io/)
-3. [postgres](https://www.postgresql.org/download/)
+3. [docker]( https://docs.docker.com/get-started/get-docker/ )
+
 
 ## How to get started
 1. copy `.env.example` and make a new file `.env`
@@ -19,18 +20,9 @@ mise install
 pnpm install
 ```
 
-4. Create postgres database
-
-Add postgres database url to `.env`
-```
-postgresql://{ user }:{ password }@localhost:5432/{ database_name }?schema=public
-```
-
-
-
-`.env` should look like
+4. Create and run database
 ```bash
-DATABASE_URL=postgresql://vege:password123@localhost:5432/vege_db?schema=public
+docker-compose up -d
 ```
 
 5. Run backend migrations

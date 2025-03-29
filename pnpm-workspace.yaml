@@ -16,4 +16,6 @@ catalog:
   valibot: ^1.0.0
   superjson: ^2.2.2
 onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - core-js-pure
   - esbuild
