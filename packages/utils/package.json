@@ -9,6 +9,7 @@
 		}
 	},
 	"scripts": {
+		"clean": "rm -rf dist/ node_modules/ .turbo/",
 		"dev": "tsup --watch --onSuccess \"node ./dist/index.js\"",
 		"build": "tsup",
 		"lint": "biome check --write",

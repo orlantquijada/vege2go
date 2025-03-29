@@ -2,9 +2,11 @@
   "name": "vege2go",
   "private": true,
   "scripts": {
+    "clean": "turbo run clean",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "api:deploy": "turbo run deploy",
+    "api:dev": "turbo run -F backend dev",
     "lint": "turbo run lint",
     "format": "biome check --write",
     "typecheck": "turbo run typecheck",

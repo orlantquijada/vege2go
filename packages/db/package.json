@@ -1,50 +1,51 @@
 {
-  "name": "@repo/db",
-  "private": true,
-  "version": "0.1.0",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "default": "./src/index.ts"
-    },
-    "./client": {
-      "import": "./dist/client.js",
-      "default": "./src/client.ts"
-    },
-    "./schema": {
-      "import": "./dist/schema.js",
-      "default": "./src/schema.ts"
-    }
-  },
-  "scripts": {
-    "dev": "pnpm with-env tsup --watch",
-    "build": "pnpm with-env tsup",
-    "deploy": "pnpm migrate && pnpm build",
-    "push": "pnpm with-env drizzle-kit push",
-    "generate": "pnpm with-env drizzle-kit generate",
-    "migrate": "pnpm with-env drizzle-kit migrate",
-    "studio": "pnpm with-env drizzle-kit studio",
-    "with-env": "dotenv -e ../../.env --",
-    "lint": "biome check --write",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@tsconfig/node-lts": "catalog:",
-    "@tsconfig/node-ts": "catalog:",
-    "@types/node": "catalog:",
-    "dotenv-cli": "catalog:",
-    "drizzle-kit": "^0.30.6",
-    "tsup": "catalog:",
-    "tsx": "catalog:",
-    "typescript": "catalog:"
-  },
-  "dependencies": {
-    "@neondatabase/serverless": "^1.0.0",
-    "drizzle-orm": "^0.41.0",
-    "drizzle-valibot": "^0.4.0",
-    "pg": "^8.14.1",
-    "valibot": "catalog:"
-  }
+	"name": "@repo/db",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"default": "./src/index.ts"
+		},
+		"./client": {
+			"import": "./dist/client.js",
+			"default": "./src/client.ts"
+		},
+		"./schema": {
+			"import": "./dist/schema.js",
+			"default": "./src/schema.ts"
+		}
+	},
+	"scripts": {
+		"clean": "rm -rf dist/ node_modules/ .turbo/",
+		"dev": "pnpm with-env tsup --watch",
+		"build": "pnpm with-env tsup",
+		"deploy": "pnpm migrate && pnpm build",
+		"push": "pnpm with-env drizzle-kit push",
+		"generate": "pnpm with-env drizzle-kit generate",
+		"migrate": "pnpm with-env drizzle-kit migrate",
+		"studio": "pnpm with-env drizzle-kit studio",
+		"with-env": "dotenv -e ../../.env --",
+		"lint": "biome check --write",
+		"typecheck": "tsc --noEmit --emitDeclarationOnly false"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@tsconfig/node-lts": "catalog:",
+		"@tsconfig/node-ts": "catalog:",
+		"@types/node": "catalog:",
+		"dotenv-cli": "catalog:",
+		"drizzle-kit": "^0.30.6",
+		"tsup": "catalog:",
+		"tsx": "catalog:",
+		"typescript": "catalog:"
+	},
+	"dependencies": {
+		"@neondatabase/serverless": "^1.0.0",
+		"drizzle-orm": "^0.41.0",
+		"drizzle-valibot": "^0.4.0",
+		"pg": "^8.14.1",
+		"valibot": "catalog:"
+	}
 }

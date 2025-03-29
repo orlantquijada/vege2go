@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "clean": "rm -rf dist/ node_modules/ .turbo/",
     "dev": "pnpm with-env tsup --onSuccess \"node ./dist/index.js\"",
     "with-env": "dotenv -e ../../.env --",
     "build": "pnpm with-env tsup",
