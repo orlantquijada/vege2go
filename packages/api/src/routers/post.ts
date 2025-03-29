@@ -1,4 +1,4 @@
-import { asc, desc, eq, gt } from "@repo/db";
+import { asc, eq } from "@repo/db";
 import { CreatePostSchema, Post } from "@repo/db/schema";
 import type { TRPCRouterRecord } from "@trpc/server";
 import * as v from "valibot";
@@ -7,7 +7,7 @@ import { t } from "../trpc.ts";
 
 export const postRouter = {
 	all: t.procedure.query(({ ctx }) =>
-		ctx.db.query.Post.findMany({ orderBy: desc(Post.createdAt) }),
+		ctx.db.query.Post.findMany({ orderBy: asc(Post.createdAt) }),
 	),
 	create: t.procedure
 		.input(CreatePostSchema)
