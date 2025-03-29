@@ -22,8 +22,27 @@ export default function Home() {
 
 function Posts() {
 	const posts = api.post.all.useQuery();
-	const createPost = api.post.create.useMutation();
 	const utils = api.useUtils();
+	const createPost = api.post.create.useMutation({
+		onMutate: async (newPost) => {
+			await utils.post.all.cancel();
+			const previousPosts = utils.post.all.getData() || [];
+
+			const _newPost = {
+				...newPost,
+				createdAt: new Date(),
+				updatedAt: null,
+				id: "b4705d70-0c5f-417d-880a-cc0d852bea93",
+			};
+
+			utils.post.all.setData(undefined, [...previousPosts, _newPost]);
+
+			return { newPost: _newPost, previousPosts };
+		},
+		onSettled: () => {
+			utils.post.all.invalidate();
+		},
+	});
 
 	return (
 		<section className="mt-6 flex flex-col items-start">
@@ -36,14 +55,9 @@ function Posts() {
 				disabled={createPost.isPending}
 				aria-disabled={createPost.isPending}
 				onClick={() => {
-					createPost.mutate(
-						{ title: `title ${Math.ceil(Math.random() * 1000)}` },
-						{
-							onSuccess: () => {
-								utils.post.all.invalidate();
-							},
-						},
-					);
+					createPost.mutate({
+						title: `title ${Math.ceil(Math.random() * 1000)}`,
+					});
 				}}
 			>
 				{createPost.isPending ? "loading..." : "create post"}
