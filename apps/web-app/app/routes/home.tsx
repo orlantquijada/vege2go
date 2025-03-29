@@ -26,13 +26,15 @@ function Posts() {
 	const utils = api.useUtils();
 
 	return (
-		<section className="mt-6">
+		<section className="mt-6 flex flex-col items-start">
 			<p className="font-semibold mb-4">Posts</p>
 			<PostList posts={posts.data} isLoading={posts.status === "pending"} />
 
 			<button
 				className="mt-4 h-9 px-4 bg-neutral-50 text-neutral-800 rounded-md"
 				type="button"
+				disabled={createPost.isPending}
+				aria-disabled={createPost.isPending}
 				onClick={() => {
 					createPost.mutate(
 						{ title: `title ${Math.ceil(Math.random() * 1000)}` },
@@ -44,7 +46,7 @@ function Posts() {
 					);
 				}}
 			>
-				create post
+				{createPost.isPending ? "loading..." : "create post"}
 			</button>
 		</section>
 	);
