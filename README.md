@@ -26,8 +26,8 @@ docker-compose up -d
 ```
 
 5. Run backend migrations
-```
-TODO
+```bash
+pnpm db:migrate
 ```
 
 6. Run `backend` + `web-app`
