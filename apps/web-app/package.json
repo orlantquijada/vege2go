@@ -21,6 +21,7 @@
 		"react-dom": "^19.0.0",
 		"react-router": "^7.4.0",
 		"superjson": "catalog:",
+		"uuid": "^11.1.0",
 		"valibot": "catalog:"
 	},
 	"devDependencies": {

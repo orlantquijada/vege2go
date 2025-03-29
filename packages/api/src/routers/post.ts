@@ -7,7 +7,7 @@ import { t } from "../trpc.ts";
 
 export const postRouter = {
 	all: t.procedure.query(({ ctx }) =>
-		ctx.db.query.Post.findMany({ orderBy: desc(Post.id) }),
+		ctx.db.query.Post.findMany({ orderBy: desc(Post.createdAt) }),
 	),
 	create: t.procedure
 		.input(CreatePostSchema)
@@ -15,17 +15,6 @@ export const postRouter = {
 	id: t.procedure.input(v.string()).query(({ ctx, input }) =>
 		ctx.db.query.Post.findFirst({
 			where: eq(Post.id, input),
-		}),
-	),
-	all2: t.procedure.query(({ ctx }) =>
-		ctx.db.query.Post.findMany({
-			where: gt(Post.createdAt, new Date()),
-			columns: { createdAt: true, id: true },
-		}),
-	),
-	all3: t.procedure.query(({ ctx }) =>
-		ctx.db.query.Post.findMany({
-			where: gt(Post.createdAt, new Date()),
 		}),
 	),
 } satisfies TRPCRouterRecord;

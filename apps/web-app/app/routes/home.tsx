@@ -1,4 +1,5 @@
 import { formatShortDate } from "@repo/utils";
+import { v4 as uuidv4 } from "uuid";
 import { api } from "~/utils/api";
 import type { Post } from "~/utils/types";
 import type { Route } from "./+types/home";
@@ -32,7 +33,7 @@ function Posts() {
 				...newPost,
 				createdAt: new Date(),
 				updatedAt: null,
-				id: "b4705d70-0c5f-417d-880a-cc0d852bea93",
+				id: uuidv4(),
 			};
 
 			utils.post.all.setData(undefined, [...previousPosts, _newPost]);
