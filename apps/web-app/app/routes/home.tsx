@@ -15,12 +15,51 @@ export default function Home() {
 	const id = "eb5da21f-fe92-4397-b1ea-223d0b3a5a39";
 	const firstPost = api.post.id.useQuery(id);
 	const utils = api.useUtils();
+	const users = api.users.all.useQuery();
+	const createUser = api.users.createUser.useMutation();
 
 	return (
 		<main>
 			<h1 className="text-lg">Vege2Go</h1>
+			<h1 className="text-lg">frontend ni nato</h1>
+			<div className="mt-4">
+				<h2>Users</h2>
+				<ul>
+					{users.data?.length ? (
+						users.data?.map((user) => (
+							<li key={user.id}>
+								<span>{user.name}</span>
+								<span>{user.age}</span>
+							</li>
+						))
+					) : (
+						<p>No users as of the moment</p>
+					)}
+				</ul>
+
+				<button
+					className="mt-4 h-9 px-4 bg-neutral-50 text-neutral-800 rounded-md"
+					type="button"
+					onClick={() => {
+						createUser.mutate(
+							{
+								age: Math.ceil(Math.random() * 100),
+								name: "nathan",
+							},
+							{
+								onSuccess: () => utils.users.all.invalidate(),
+							},
+						);
+					}}
+				>
+					create user
+				</button>
+			</div>
 			<div className="mt-4">
 				<p className="font-semibold">Posts</p>
+				{posts.data?.map((post) => (
+					<Item id={post.id} key={post.id} />
+				))}
 				<ol>
 					{posts.data?.map((post) => (
 						<li key={post.id}>
@@ -59,4 +98,8 @@ export default function Home() {
 			</button>
 		</main>
 	);
+}
+
+function Item({ id }: { id: string }) {
+	return <div>Item {id}</div>;
 }

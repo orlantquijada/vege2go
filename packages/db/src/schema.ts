@@ -12,6 +12,16 @@ export const Post = pgTable("posts", (t) => ({
 		.$onUpdateFn(() => sql`now()`),
 }));
 
+export const Users = pgTable("users", (t) => ({
+	id: t.uuid().notNull().primaryKey().defaultRandom(),
+	createdAt: t.timestamp().defaultNow().notNull(),
+	updatedAt: t
+		.timestamp({ mode: "date", withTimezone: true })
+		.$onUpdateFn(() => sql`now()`),
+	name: t.varchar({ length: 256 }),
+	age: t.smallint(),
+}));
+
 export const CreatePostSchema = v.pick(
 	createInsertSchema(Post, {
 		title: v.pipe(v.string(), v.maxLength(256)),

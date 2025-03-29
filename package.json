@@ -7,6 +7,7 @@
     "dev": "turbo run dev",
     "api:deploy": "turbo run deploy",
     "api:dev": "turbo run -F backend dev",
+    "db:migrate": "turbo run -F @repo/db migrate",
     "lint": "turbo run lint",
     "format": "biome check --write",
     "typecheck": "turbo run typecheck",
