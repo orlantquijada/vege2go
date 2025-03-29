@@ -55,11 +55,9 @@ export default function Home() {
 					create user
 				</button>
 			</div>
+
 			<div className="mt-4">
 				<p className="font-semibold">Posts</p>
-				{posts.data?.map((post) => (
-					<Item id={post.id} key={post.id} />
-				))}
 				<ol>
 					{posts.data?.map((post) => (
 						<li key={post.id}>

@@ -34,10 +34,3 @@ TODO
 ```bash
 pnpm dev
 ```
-
-
-### TODO(@orlan)
-- [ ] Add migration script to dev script on `db`
-- [ ] Fix backend deployment
-- [ ] Fix `backend` not updating on `api` changes (local dev)
-- [ ] Add proper READMEs

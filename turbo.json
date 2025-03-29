@@ -44,7 +44,10 @@
       "persistent": true
     },
     "deploy": {
-      "cache": false,
+      "dependsOn": [
+        "^build",
+        "^deploy"
+      ],
       "persistent": false
     }
   }

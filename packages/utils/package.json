@@ -1,16 +1,20 @@
 {
 	"name": "@repo/utils",
+	"private": true,
 	"version": "1.0.0",
 	"type": "module",
 	"exports": {
 		".": {
+			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js",
 			"default": "./src/index.ts"
-		}
+		},
+		"./package.json": "./package.json"
 	},
+	"files": ["dist"],
 	"scripts": {
 		"clean": "rm -rf dist/ node_modules/ .turbo/",
-		"dev": "tsup --watch --onSuccess \"node ./dist/index.js\"",
+		"dev": "tsup",
 		"build": "tsup",
 		"lint": "biome check --write",
 		"typecheck": "tsc --noEmit --emitDeclarationOnly false"

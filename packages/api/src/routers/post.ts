@@ -1,4 +1,4 @@
-import { desc, eq, gt } from "@repo/db";
+import { asc, desc, eq, gt } from "@repo/db";
 import { CreatePostSchema, Post } from "@repo/db/schema";
 import type { TRPCRouterRecord } from "@trpc/server";
 import * as v from "valibot";
@@ -21,6 +21,11 @@ export const postRouter = {
 		ctx.db.query.Post.findMany({
 			where: gt(Post.createdAt, new Date()),
 			columns: { createdAt: true, id: true },
+		}),
+	),
+	all3: t.procedure.query(({ ctx }) =>
+		ctx.db.query.Post.findMany({
+			where: gt(Post.createdAt, new Date()),
 		}),
 	),
 } satisfies TRPCRouterRecord;

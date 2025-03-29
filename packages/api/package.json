@@ -3,33 +3,36 @@
 	"private": true,
 	"version": "0.1.0",
 	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
 	"exports": {
 		".": {
+			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js",
 			"default": "./src/index.ts"
-		}
+		},
+		"./package.json": "./package.json"
 	},
+	"files": ["dist"],
 	"scripts": {
 		"clean": "rm -rf dist/ node_modules/ .turbo/",
-		"dev": "tsup --watch",
-		"build": "tsup",
+		"dev": "pnpm with-env tsup --watch",
+		"build": "pnpm with-env tsup",
 		"lint": "biome check --write",
-		"typecheck": "tsc --noEmit --emitDeclarationOnly false"
+		"typecheck": "tsc --noEmit --emitDeclarationOnly false",
+		"with-env": "dotenv -e ../../.env --"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
-		"@repo/db": "workspace:*",
 		"@tsconfig/node-lts": "catalog:",
 		"@tsconfig/node-ts": "catalog:",
 		"@types/node": "catalog:",
+		"@types/pg": "catalog:",
+		"dotenv-cli": "catalog:",
 		"tsup": "catalog:",
 		"typescript": "catalog:"
 	},
 	"dependencies": {
+		"@repo/db": "workspace:*",
 		"@trpc/server": "catalog:",
-		"pg": "^8.14.1",
 		"superjson": "catalog:",
 		"valibot": "catalog:"
 	}
