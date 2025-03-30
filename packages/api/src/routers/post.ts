@@ -11,7 +11,9 @@ export const postRouter = {
 	),
 	create: t.procedure
 		.input(CreatePostSchema)
-		.mutation(({ ctx, input }) => ctx.db.insert(Post).values(input)),
+		.mutation(({ ctx, input }) =>
+			ctx.db.insert(Post).values(input).returning(),
+		),
 	id: t.procedure.input(v.string()).query(({ ctx, input }) =>
 		ctx.db.query.Post.findFirst({
 			where: eq(Post.id, input),

@@ -1,40 +1,40 @@
 {
-	"name": "web-app",
-	"private": true,
-	"type": "module",
-	"scripts": {
-		"clean": "rm -rf .react-router .turbo .build node_modules",
-		"build": "react-router build",
-		"dev": "react-router dev",
-		"start": "react-router-serve ./build/server/index.js",
-		"typecheck": "react-router typegen && tsc"
-	},
-	"dependencies": {
-		"@react-router/node": "^7.4.0",
-		"@react-router/serve": "^7.4.0",
-		"@repo/api": "workspace:*",
-		"@repo/utils": "workspace:*",
-		"@tanstack/react-query": "^5.69.0",
-		"@trpc/react-query": "catalog:",
-		"isbot": "^5.1.17",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
-		"react-router": "^7.4.0",
-		"superjson": "catalog:",
-		"uuid": "^11.1.0",
-		"valibot": "catalog:"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "catalog:",
-		"@react-router/dev": "^7.4.0",
-		"@tailwindcss/vite": "^4.0.17",
-		"@types/node": "catalog:",
-		"@types/react": "^19.0.1",
-		"@types/react-dom": "^19.0.1",
-		"react-router-devtools": "^1.1.0",
-		"tailwindcss": "^4.0.17",
-		"typescript": "catalog:",
-		"vite": "^5.4.11",
-		"vite-tsconfig-paths": "^5.1.4"
-	}
+  "name": "web-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf .react-router .turbo .build node_modules",
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc"
+  },
+  "dependencies": {
+    "@react-router/node": "^7.4.0",
+    "@react-router/serve": "^7.4.0",
+    "@repo/api": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "@tanstack/react-query": "^5.69.0",
+    "@trpc/react-query": "catalog:",
+    "isbot": "^5.1.17",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.4.0",
+    "superjson": "catalog:",
+    "uuid": "^11.1.0",
+    "valibot": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@react-router/dev": "^7.4.0",
+    "@tailwindcss/vite": "^4.0.17",
+    "@types/node": "catalog:",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.1",
+    "react-router-devtools": "^1.1.0",
+    "tailwindcss": "^4.0.17",
+    "typescript": "catalog:",
+    "vite": "^5.4.11",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
 }

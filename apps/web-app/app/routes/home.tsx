@@ -1,8 +1,14 @@
 import { formatShortDate } from "@repo/utils";
 import { v4 as uuidv4 } from "uuid";
 import { api } from "~/utils/api";
+import { server } from "~/utils/server";
 import type { Post } from "~/utils/types";
 import type { Route } from "./+types/home";
+
+export async function loader() {
+	const posts = await server.post.all();
+	return { posts };
+}
 
 export function meta({}: Route.MetaArgs) {
 	return [
@@ -11,18 +17,19 @@ export function meta({}: Route.MetaArgs) {
 	];
 }
 
-export default function Home() {
+export default function Home({ loaderData }: Route.ComponentProps) {
+	const { posts } = loaderData;
 	return (
 		<main>
 			<h1 className="text-lg">Vege2Go</h1>
 
-			<Posts />
+			<Posts initialPosts={posts} />
 		</main>
 	);
 }
 
-function Posts() {
-	const posts = api.post.all.useQuery();
+function Posts({ initialPosts }: { initialPosts: Post[] }) {
+	const posts = api.post.all.useQuery(undefined, { initialData: initialPosts });
 	const utils = api.useUtils();
 	const createPost = api.post.create.useMutation({
 		onMutate: async (newPost) => {
@@ -48,7 +55,7 @@ function Posts() {
 	return (
 		<section className="mt-6 flex flex-col items-start">
 			<p className="font-semibold mb-4">Posts</p>
-			<PostList posts={posts.data} isLoading={posts.status === "pending"} />
+			<PostList posts={posts.data} />
 
 			<button
 				className="mt-4 h-9 px-4 bg-neutral-50 text-neutral-800 rounded-md"

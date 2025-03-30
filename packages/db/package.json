@@ -48,7 +48,7 @@
 		"@neondatabase/serverless": "^1.0.0",
 		"drizzle-orm": "^0.41.0",
 		"drizzle-valibot": "^0.4.0",
-		"pg": "^8.14.1",
+		"pg": "catalog:",
 		"valibot": "catalog:"
 	}
 }

@@ -30,6 +30,9 @@ catalogs:
     dotenv-cli:
       specifier: ^8.0.0
       version: 8.0.0
+    pg:
+      specifier: ^8.14.1
+      version: 8.14.1
     superjson:
       specifier: ^2.2.2
       version: 2.2.2
@@ -240,7 +243,7 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0(drizzle-orm@0.41.0(@neondatabase/serverless@1.0.0)(@types/pg@8.11.11)(gel@2.0.1)(pg@8.14.1))(valibot@1.0.0(typescript@5.8.2))
       pg:
-        specifier: ^8.14.1
+        specifier: 'catalog:'
         version: 8.14.1
       valibot:
         specifier: 'catalog:'
