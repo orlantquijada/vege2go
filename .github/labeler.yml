@@ -1,0 +1,20 @@
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/**/*
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+backend:
+  - changed-files:
+      - any-glob-to-any-file:
+          - apps/backend/**/*
+web-app:
+  - changed-files:
+      - any-glob-to-any-file:
+          - apps/web-app/**/*
+packages:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/**/*
