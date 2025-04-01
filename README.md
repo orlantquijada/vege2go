@@ -1,3 +1,5 @@
+# Hello world
+
 ## Things to install
 1. [mise](https://mise.jdx.dev/)
 2. [pnpm](https://pnpm.io/)
