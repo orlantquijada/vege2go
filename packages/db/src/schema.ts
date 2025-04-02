@@ -1,9 +1,7 @@
-import { match } from "assert";
-import { sql, relations, timestamp } from "drizzle-orm";
-import { pgEnum, pgTable, timestampllllllll } from "drizzle-orm/pg-core";
+import { sql, relations } from "drizzle-orm";
+import { pgEnum, pgTable, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-valibot";
 import * as v from "valibot";
-
 
 const timestampFields = {
 	createdAt: timestamp().defaultNow().notNull(),
@@ -25,15 +23,8 @@ export const CreatePostSchema = v.pick(
 	["title"],
 );
 
-export const userRoles = [
-	"consumer",
-	"producer",
-	"logistics",
-] as const;
-const rolesEnum = pgEnum(
-	"roles_enum",
-	userRoles
-);
+export const userRoles = ["consumer", "producer", "logistics"] as const;
+export const rolesEnum = pgEnum("roles_enum", userRoles);
 
 export const User = pgTable("users", (t) => ({
 	id: t.uuid().notNull().primaryKey().defaultRandom(),
@@ -49,9 +40,9 @@ export const User = pgTable("users", (t) => ({
 export const usersRelations = relations(User, ({ many }) => ({
 	produceListings: many(ProduceListings), // One User (Producer) → Many ProduceListings
 	buyOrders: many(BuyOrders), // One User (Consumer) → Many BuyOrders
-	matchesAsConsumer: many(Matches, { fields: [User.id], references: [Matches.consumerId] }), // One User (Consumer) → Many Matches
-	matchesAsProducer: many(Matches, { fields: [User.id], references: [Matches.producerId] }), // One User (Producer) → Many Matches
-	logistics: many(Logistics, { fields: [User.id], references: [Logistics.driverId]})
+	matchedAsConsumer: many(Matches, { relationName: "matched_as_consumer" }), // One User (Consumer) → Many Matches
+	matchedAsProducer: many(Matches, { relationName: "matched_as_producer" }), // One User (Producer) → Many Matches
+	driverId: many(Logistics), // One User (Producer) → Many Logistics
 }));
 
 export const produceListingStatus = [
@@ -59,7 +50,7 @@ export const produceListingStatus = [
 	"partially_sold",
 	"sold",
 ] as const;
-const produceListingStatusEnum = pgEnum(
+export const produceListingStatusEnum = pgEnum(
 	"produce_listing_status_enum",
 	produceListingStatus,
 );
@@ -78,10 +69,16 @@ export const ProduceListings = pgTable("produce_listings", (t) => ({
 	...timestampFields,
 }));
 
-export const produceListingsRelations = relations(ProduceListings, ({ one, many }) => ({
-	producer: one(User, { fields: [ProduceListings.producerId], references: [User.id] }), // One Producer → Many ProduceListings
-	matches: many(Matches, { fields: [ProduceListings.id], references: [Matches.produceListingId] }), // One ProduceListing → Many Matches
-}));
+export const produceListingsRelations = relations(
+	ProduceListings,
+	({ one, many }) => ({
+		producer: one(User, {
+			fields: [ProduceListings.producerId],
+			references: [User.id],
+		}), // One Producer → Many ProduceListings
+		matches: many(Matches), // One ProduceListing → Many Matches
+	}),
+);
 
 export const buyOrderStatus = [
 	"pending",
@@ -89,68 +86,34 @@ export const buyOrderStatus = [
 	"completed",
 	"cancelled",
 ] as const;
-const buyOrderEnum = pgEnum(
-	"buy_order_enum",
-	buyOrderStatus
-);
-
+export const buyOrderEnum = pgEnum("buy_order_enum", buyOrderStatus);
 
 export const BuyOrders = pgTable("buy_orders", (t) => ({
 	id: t.uuid().notNull().primaryKey().defaultRandom(),
 	consumerId: t.uuid().references(() => User.id),
 	produceName: t.varchar({ length: 255 }).notNull(),
 	quantity: t.numeric({ mode: "number", precision: 12, scale: 4 }).notNull(),
-	minPricePerKg: t.numeric({ mode: "number", precision: 12, scale: 2 }).notNull(),
-	maxPricePerKg: t.numeric({ mode: "number", precision: 12, scale: 2 }).notNull(),
+	minPricePerKg: t
+		.numeric({ mode: "number", precision: 12, scale: 2 })
+		.notNull(),
+	maxPricePerKg: t
+		.numeric({ mode: "number", precision: 12, scale: 2 })
+		.notNull(),
 	status: buyOrderEnum().notNull(),
 	deliveryLocation: t.jsonb().notNull(),
 	...timestampFields,
 }));
 
 export const buyOrdersRelations = relations(BuyOrders, ({ one, many }) => ({
-	consumer: one(User, { fields: [BuyOrders.consumerId], references: [User.id] }), // One Consumer → Many BuyOrders
-	matches: many(Matches, { fields: [BuyOrders.id], references: [Matches.buyOrderId] }), // One BuyOrder → Many Matches
+	consumer: one(User, {
+		fields: [BuyOrders.consumerId],
+		references: [User.id],
+	}), // One Consumer → Many BuyOrders
+	matches: many(Matches), // One BuyOrder → Many Matches
 }));
 
-export const matchStatus = [
-	"pending",
-	"confirmed",
-	"shipped",
-	"delivered",
-] as const;
-const matchEnum = pgEnum("match_enum", matchStatus);
-
-export const Matches = pgTable("matches", (t) => ({
-	id: t.uuid().primaryKey().defaultRandom(),
-	produceListingId: t.uuid().references(() => ProduceListings.id),
-	buyOrderId: t.uuid().references(() => BuyOrders.id),
-	matchedQuantityInKg: t
-		.numeric({ mode: "number", precision: 16, scale: 4 })
-		.notNull(),
-	consumerId: t.uuid().references(() => User.id),
-	producerId: t.uuid().references(() => User.id),
-	status: matchEnum().notNull(),
-	...timestampFields,
-}));
-
-export const matchesRelations = relations(Matches, ({ one, many }) => ({
-	produceListing: one(ProduceListings, { fields: [Matches.produceListingId], references: [ProduceListings.id] }), // One Match → One ProduceListing
-	buyOrder: one(BuyOrders, { fields: [Matches.buyOrderId], references: [BuyOrders.id] }), // One Match → One BuyOrder
-	consumer: one(User, { fields: [Matches.consumerId], references: [User.id] }), // One Match → One Consumer
-	producer: one(User, { fields: [Matches.producerId], references: [User.id] }), // One Match → One Producer
-	transaction: one(Transactions, { fields: [Matches.id], references: [Transactions.id]}), // One Match → One Transaction 
-	logistics: many(Logistics, { fields: [Matches.id], references: [Logistics.matchId]}) // One logistics → Many Matches loaded into truck
-}));
-
-export const transactionStatus = [
-	"pending", 
-	"paid", 
-	"failed"
-] as const;
-const transactionEnum = pgEnum(
-	"transaction_enum", 
-	transactionStatus
-);
+export const transactionStatus = ["pending", "paid", "failed"] as const;
+export const transactionEnum = pgEnum("transaction_enum", transactionStatus);
 
 export const Transactions = pgTable("transactions", (t) => ({
 	id: t.uuid().primaryKey().defaultRandom(),
@@ -162,22 +125,17 @@ export const Transactions = pgTable("transactions", (t) => ({
 }));
 
 export const transactionsRelations = relations(Transactions, ({ one }) => ({
-	match: one(Matches, { fields: [Transactions.matchId], references: [Matches.id] }),
+	match: one(Matches, {
+		fields: [Transactions.matchId],
+		references: [Matches.id],
+	}),
 }));
 
-export const logisticsStatus = [
-	"pending", 
-	"in_transit", 
-	"delivered"
-] as const;
-const logisticsEnum = pgEnum(
-	"logistics_enum", 
-	logisticsStatus
-);
+export const logisticsStatus = ["pending", "in_transit", "delivered"] as const;
+export const logisticsEnum = pgEnum("logistics_enum", logisticsStatus);
 
 export const Logistics = pgTable("logistics", (t) => ({
 	id: t.uuid().primaryKey().defaultRandom(),
-	matchId: t.uuid().references(() => Matches.id),
 	truckId: t.uuid().references(() => Truck.id),
 	driverId: t.uuid().references(() => User.id),
 	status: logisticsEnum().notNull(),
@@ -185,21 +143,14 @@ export const Logistics = pgTable("logistics", (t) => ({
 }));
 
 export const logisticsRelations = relations(Logistics, ({ one, many }) => ({
-	matches: many(Logistics, { fields: [Matches.logisticsId], references: [Logistics.id] }),
-	truck: one(Truck, { fields: [Logistics.truckId], references: [Truck.id]}),
-	user: one(User, { fields: [Logistics.driverId], references: [User.id]}),
-	waypoints: many(Waypoints, { fields: [Waypoints.logisticsId], references: [Logistics.id]}),
-}))
+	matches: many(Matches),
+	truck: one(Truck, { fields: [Logistics.truckId], references: [Truck.id] }),
+	user: one(User, { fields: [Logistics.driverId], references: [User.id] }),
+	waypoints: many(Waypoints),
+}));
 
-export const truckStatus = [
-	"available", 
-	"in_use", 
-	"maintenance"
-] as const;
-const truckEnum = pgEnum(
-	"truck_enum", 
-	truckStatus
-);
+export const truckStatus = ["available", "in_use", "maintenance"] as const;
+export const truckEnum = pgEnum("truck_enum", truckStatus);
 
 export const Truck = pgTable("trucks", (t) => ({
 	id: t.uuid().primaryKey().defaultRandom(),
@@ -210,17 +161,14 @@ export const Truck = pgTable("trucks", (t) => ({
 }));
 
 export const truckRelations = relations(Truck, ({ one }) => ({
-	logistics: one(Logistics, { fields: [Truck.id], references: [Logistics.truckId]})
-}))
+	logistics: one(Logistics, {
+		fields: [Truck.id],
+		references: [Logistics.truckId],
+	}),
+}));
 
-export const waypointStatus = [
-	"pickup",
-	"dropoff",
-] as const;
-const waypointEnum = pgEnum(
-	"waypoint_enum",
-	waypointStatus
-)
+export const waypointStatus = ["pickup", "dropoff"] as const;
+export const waypointEnum = pgEnum("waypoint_enum", waypointStatus);
 
 export const Waypoints = pgTable("waypoints", (t) => ({
 	id: t.uuid().primaryKey().defaultRandom(),
@@ -229,8 +177,62 @@ export const Waypoints = pgTable("waypoints", (t) => ({
 	type: waypointEnum().notNull(),
 	sequence: t.smallint().notNull(),
 	...timestampFields,
-}))
+}));
 
 export const waypointsRelations = relations(Waypoints, ({ one }) => ({
-	logistics: one(Logistics, { fields: [Waypoints.logisticsId], references: [Logistics.id]})
-}))
+	logistics: one(Logistics, {
+		fields: [Waypoints.logisticsId],
+		references: [Logistics.id],
+	}),
+}));
+
+export const matchStatus = [
+	"pending",
+	"confirmed",
+	"shipped",
+	"delivered",
+] as const;
+export const matchEnum = pgEnum("match_enum", matchStatus);
+
+export const Matches = pgTable("matches", (t) => ({
+	id: t.uuid().primaryKey().defaultRandom(),
+	produceListingId: t.uuid().references(() => ProduceListings.id),
+	buyOrderId: t.uuid().references(() => BuyOrders.id),
+	matchedQuantityInKg: t
+		.numeric({ mode: "number", precision: 16, scale: 4 })
+		.notNull(),
+	consumerId: t.uuid().references(() => User.id),
+	producerId: t.uuid().references(() => User.id),
+	status: matchEnum().notNull(),
+	logisticsId: t.uuid().references(() => Logistics.id),
+	...timestampFields,
+}));
+
+export const matchesRelations = relations(Matches, ({ one, many }) => ({
+	produceListing: one(ProduceListings, {
+		fields: [Matches.produceListingId],
+		references: [ProduceListings.id],
+	}), // One Match → One ProduceListing
+	buyOrder: one(BuyOrders, {
+		fields: [Matches.buyOrderId],
+		references: [BuyOrders.id],
+	}), // One Match → One BuyOrder
+	matchedAsConsumer: one(User, {
+		relationName: "matched_as_consumer",
+		fields: [Matches.consumerId],
+		references: [User.id],
+	}), // One Match → One Consumer
+	matchedAsProducer: one(User, {
+		relationName: "matched_as_producer",
+		fields: [Matches.producerId],
+		references: [User.id],
+	}), // One Match → One Producer
+	transaction: one(Transactions, {
+		fields: [Matches.id],
+		references: [Transactions.id],
+	}), // One Match → One Transaction
+	logistics: one(Logistics, {
+		fields: [Matches.id],
+		references: [Logistics.id],
+	}), // One logistics → Many Matches loaded into truck
+}));
