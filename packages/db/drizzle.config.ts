@@ -1,12 +1,12 @@
 import { defineConfig } from "drizzle-kit";
+import { connectionString } from "./src/url.ts";
 
 export default defineConfig({
 	out: "./drizzle",
 	schema: "./src/schema.ts",
 	dialect: "postgresql",
 	dbCredentials: {
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		url: process.env.DATABASE_URL!,
+		url: connectionString,
 	},
 	casing: "snake_case",
 });

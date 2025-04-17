@@ -1,27 +1,18 @@
-import {
-	type NodePgDatabase,
-	drizzle as pgDrizzle,
-} from "drizzle-orm/node-postgres";
+import { neon, neonConfig } from "@neondatabase/serverless";
+import { drizzle as drizzleHttp } from "drizzle-orm/neon-http";
+
 import * as schema from "./schema.ts";
+import { connectionString } from "./url.ts";
 
-import { neon } from "@neondatabase/serverless";
-import { drizzle as neonDrizzle } from "drizzle-orm/neon-http";
-
-export const db =
-	process.env.NODE_ENV === "development"
-		? pgDrizzle({
-				connection: {
-					// biome-ignore lint/style/noNonNullAssertion: <explanation>
-					connectionString: process.env.DATABASE_URL!,
-				},
-				schema,
-				casing: "snake_case",
-			})
-		: (neonDrizzle({
-				client: neon(
-					// biome-ignore lint/style/noNonNullAssertion: <explanation>
-					process.env.DATABASE_URL!,
-				),
-				schema,
-				casing: "snake_case",
-			}) as unknown as NodePgDatabase<typeof schema>);
+if (process.env.NODE_ENV === "development") {
+	neonConfig.fetchEndpoint = (host) => {
+		const [protocol, port] =
+			host === "db.localtest.me" ? ["http", 4444] : ["https", 443];
+		return `${protocol}://${host}:${port}/sql`;
+	};
+}
+export const db = drizzleHttp({
+	client: neon(connectionString),
+	schema,
+	casing: "snake_case",
+});

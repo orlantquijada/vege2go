@@ -18,7 +18,9 @@
 		},
 		"./package.json": "./package.json"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"clean": "rm -rf dist/ node_modules/ .turbo/",
 		"dev": "pnpm with-env tsup",
