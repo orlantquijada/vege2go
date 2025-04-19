@@ -1,13 +1,27 @@
-import { formatShortDate } from "@repo/utils";
+import {
+	SignInButton,
+	SignedIn,
+	SignedOut,
+	UserButton,
+	useAuth,
+	useSession,
+} from "@clerk/react-router";
+import { attempt, formatShortDate } from "@repo/utils";
+import type { LoaderFunctionArgs } from "react-router";
 import { v4 as uuidv4 } from "uuid";
+
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { api } from "~/utils/api";
-import { server } from "~/utils/server";
+import { createServerCaller } from "~/utils/server";
 import type { Post } from "~/utils/types";
 import type { Route } from "./+types/home";
 
-export async function loader() {
+export async function loader(args: LoaderFunctionArgs) {
+	const server = await createServerCaller(args);
 	const posts = await server.post.all();
-	return { posts };
+	const postsPrivate = await attempt(server.post.private());
+	return { posts, postsPrivate: postsPrivate.success ? postsPrivate.data : [] };
 }
 
 export function meta(_: Route.MetaArgs) {
@@ -17,13 +31,53 @@ export function meta(_: Route.MetaArgs) {
 	];
 }
 
+// export default function Home({ loaderData }: Route.ComponentProps) {
+// 	const { posts } = loaderData;
+// 	return (
+// 		<main>
+// 			<h1 className="text-lg">Vege2Go</h1>
+//
+// 			<Posts initialPosts={posts} />
+// 		</main>
+// 	);
+// }
+
 export default function Home({ loaderData }: Route.ComponentProps) {
-	const { posts } = loaderData;
+	const all = api.post.private.useQuery();
+
+	const session = useSession();
+	const queryClient = useQueryClient();
+
+	useEffect(() => {
+		if (!session.isSignedIn) {
+			queryClient.clear();
+		}
+	}, [session.isSignedIn, queryClient.clear]);
+
 	return (
 		<main>
-			<h1 className="text-lg">Vege2Go</h1>
+			<header>
+				<SignedOut>
+					<SignInButton />
+				</SignedOut>
+				<SignedIn>
+					<UserButton />
+				</SignedIn>
+			</header>
 
-			<Posts initialPosts={posts} />
+			<div className="grid grid-cols-3">
+				<PostList posts={loaderData.posts} />
+
+				<div>
+					<p>private server</p>
+					<PostList posts={loaderData.postsPrivate} />
+				</div>
+
+				<div>
+					<p>private client</p>
+					<PostList posts={all.data} isLoading={all.status === "pending"} />
+				</div>
+			</div>
 		</main>
 	);
 }

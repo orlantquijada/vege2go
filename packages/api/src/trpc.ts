@@ -1,11 +1,6 @@
-import { db } from "@repo/db/client";
-import { initTRPC } from "@trpc/server";
-import type { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
+import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
-
-export async function createTRPCContext(opts: CreateFastifyContextOptions) {
-	return { db };
-}
+import type { createTRPCContext } from "./context.ts";
 
 export const t = initTRPC.context<typeof createTRPCContext>().create({
 	transformer: superjson,
@@ -13,3 +8,23 @@ export const t = initTRPC.context<typeof createTRPCContext>().create({
 
 export const createCallerFactory = t.createCallerFactory;
 export const createTRPCRouter = t.router;
+
+const isAuthed = t.middleware(({ ctx, next }) => {
+	if (!ctx.auth?.userId) {
+		throw new TRPCError({
+			code: "UNAUTHORIZED",
+			message: "Not authenticated",
+		});
+	}
+
+	return next({
+		ctx: {
+			auth: ctx.auth,
+		},
+	});
+});
+
+const procedure = t.procedure;
+
+export const publicProcedure = procedure;
+export const protectedProcedure = procedure.use(isAuthed);
