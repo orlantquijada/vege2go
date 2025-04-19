@@ -9,6 +9,8 @@
 		"with-env": "dotenv -e ../../.env --",
 		"build": "pnpm with-env tsup",
 		"deploy": "pnpm with-env tsup",
+		"lint:fix": "biome check --write",
+		"lint": "biome check",
 		"start": "pnpm with-env node dist/index.js"
 	},
 	"dependencies": {

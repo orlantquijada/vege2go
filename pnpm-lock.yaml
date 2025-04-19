@@ -9,6 +9,9 @@ catalogs:
     '@biomejs/biome':
       specifier: ^1.9.4
       version: 1.9.4
+    '@trpc/server':
+      specifier: ^11.0.0
+      version: 11.0.0
     '@tsconfig/node-lts':
       specifier: ^22.0.1
       version: 22.0.1
@@ -24,15 +27,12 @@ catalogs:
     dotenv-cli:
       specifier: ^8.0.0
       version: 8.0.0
-    pg:
-      specifier: ^8.14.1
-      version: 8.14.1
+    superjson:
+      specifier: ^2.2.2
+      version: 2.2.2
     tsup:
       specifier: 8.3.0
       version: 8.3.0
-    tsx:
-      specifier: ^4.19.3
-      version: 4.19.3
     typescript:
       specifier: ^5.8.2
       version: 5.8.2

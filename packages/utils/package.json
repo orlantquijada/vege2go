@@ -15,7 +15,8 @@
 		"clean": "rm -rf dist/ node_modules/ .turbo/",
 		"dev": "tsup",
 		"build": "tsup",
-		"lint": "biome check --write",
+		"lint:fix": "biome check --write",
+		"lint": "biome check",
 		"typecheck": "tsc --noEmit --emitDeclarationOnly false"
 	},
 	"devDependencies": {
