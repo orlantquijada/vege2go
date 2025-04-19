@@ -1,3 +1,4 @@
+import { clerkPlugin } from "@clerk/fastify";
 import cors from "@fastify/cors";
 import { appRouter, createTRPCContext } from "@repo/api";
 import { db } from "@repo/db/client";
@@ -30,6 +31,8 @@ function createServer() {
 				? "*"
 				: ["https://vege2go-web-app.vercel.app"],
 	});
+
+	app.register(clerkPlugin);
 
 	app.register(fastifyTRPCPlugin, {
 		prefix: "/trpc",

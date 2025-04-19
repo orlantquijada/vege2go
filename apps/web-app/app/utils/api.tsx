@@ -1,3 +1,4 @@
+import { useAuth } from "@clerk/react-router";
 import type { AppRouter } from "@repo/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTRPCReact, httpBatchLink, loggerLink } from "@trpc/react-query";
@@ -7,6 +8,7 @@ import superjson from "superjson";
 export const api = createTRPCReact<AppRouter>();
 
 export function TRPCProvider(props: { children: ReactNode }) {
+	const { getToken } = useAuth();
 	const [queryClient] = useState(() => new QueryClient());
 	const [trpcClient] = useState(() =>
 		api.createClient({
@@ -18,6 +20,12 @@ export function TRPCProvider(props: { children: ReactNode }) {
 				httpBatchLink({
 					transformer: superjson,
 					url: `${getBaseUrl()}/trpc`,
+					async headers() {
+						const token = await getToken();
+						return {
+							Authorization: token ?? undefined,
+						};
+					},
 				}),
 			],
 		}),

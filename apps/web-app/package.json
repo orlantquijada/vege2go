@@ -12,6 +12,7 @@
 		"typecheck": "react-router typegen && tsc"
 	},
 	"dependencies": {
+		"@clerk/react-router": "^1.2.7",
 		"@react-router/node": "^7.4.0",
 		"@react-router/serve": "^7.4.0",
 		"@repo/api": "workspace:*",
