@@ -29,10 +29,6 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      - name: Label
-        id: label
-        uses: actions/labeler@v5
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:

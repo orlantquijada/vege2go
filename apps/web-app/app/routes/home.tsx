@@ -10,7 +10,7 @@ export async function loader() {
 	return { posts };
 }
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_: Route.MetaArgs) {
 	return [
 		{ title: "New React Router App" },
 		{ name: "description", content: "Welcome to React Router!" },

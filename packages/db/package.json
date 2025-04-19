@@ -18,9 +18,7 @@
 		},
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"scripts": {
 		"clean": "rm -rf dist/ node_modules/ .turbo/",
 		"dev": "pnpm with-env tsup",
@@ -31,7 +29,8 @@
 		"migrate": "pnpm with-env drizzle-kit migrate",
 		"studio": "pnpm with-env drizzle-kit studio",
 		"with-env": "dotenv -e ../../.env --",
-		"lint": "biome check --write",
+		"lint:fix": "biome check --write",
+		"lint": "biome check",
 		"typecheck": "tsc --noEmit --emitDeclarationOnly false"
 	},
 	"devDependencies": {

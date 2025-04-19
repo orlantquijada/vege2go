@@ -15,7 +15,8 @@
 		"clean": "rm -rf dist/ node_modules/ .turbo/",
 		"dev": "pnpm with-env tsup --watch",
 		"build": "pnpm with-env tsup",
-		"lint": "biome check --write",
+		"lint:fix": "biome check --write",
+		"lint": "biome check",
 		"typecheck": "tsc --noEmit --emitDeclarationOnly false",
 		"with-env": "dotenv -e ../../.env --"
 	},
