@@ -45,9 +45,9 @@ catalogs:
     typescript:
       specifier: ^5.8.2
       version: 5.8.2
-    valibot:
-      specifier: ^1.0.0
-      version: 1.0.0
+    zod:
+      specifier: ^3.25.20
+      version: 3.25.20
 
 importers:
 
@@ -171,9 +171,9 @@ importers:
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
-      valibot:
+      zod:
         specifier: 'catalog:'
-        version: 1.0.0(typescript@5.8.2)
+        version: 3.25.20
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
@@ -223,9 +223,9 @@ importers:
       superjson:
         specifier: 'catalog:'
         version: 2.2.2
-      valibot:
+      zod:
         specifier: 'catalog:'
-        version: 1.0.0(typescript@5.8.2)
+        version: 3.25.20
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
@@ -260,15 +260,15 @@ importers:
       drizzle-orm:
         specifier: ^0.41.0
         version: 0.41.0(@neondatabase/serverless@1.0.0)(@types/pg@8.11.11)(gel@2.0.1)(pg@8.14.1)(postgres@3.4.5)
-      drizzle-valibot:
-        specifier: ^0.4.0
-        version: 0.4.0(drizzle-orm@0.41.0(@neondatabase/serverless@1.0.0)(@types/pg@8.11.11)(gel@2.0.1)(pg@8.14.1)(postgres@3.4.5))(valibot@1.0.0(typescript@5.8.2))
+      drizzle-zod:
+        specifier: ^0.8.1
+        version: 0.8.1(drizzle-orm@0.41.0(@neondatabase/serverless@1.0.0)(@types/pg@8.11.11)(gel@2.0.1)(pg@8.14.1)(postgres@3.4.5))(zod@3.25.20)
       pg:
         specifier: 'catalog:'
         version: 8.14.1
-      valibot:
+      zod:
         specifier: 'catalog:'
-        version: 1.0.0(typescript@5.8.2)
+        version: 3.25.20
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
@@ -2802,11 +2802,11 @@ packages:
       sqlite3:
         optional: true
 
-  drizzle-valibot@0.4.0:
-    resolution: {integrity: sha512-0K90Ko1l5uRFNMN/3RwVQy+6biEHiXA/thxq+ZsEDuHqevpiY1Yy8qQEzx9eshv3HEtFlaulAoV0POZJ0bcdJg==}
+  drizzle-zod@0.8.1:
+    resolution: {integrity: sha512-k2/2cwBz3Vjb7CWPVCeMNajZpG43V7SqhNrZ8LsWJOz8TztQ5YtU2ifgnfnxqZXsxeHmdQnsl6eXm7GwDZnq/Q==}
     peerDependencies:
       drizzle-orm: '>=0.36.0'
-      valibot: '>=1.0.0-beta.7'
+      zod: ^3.25.1
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -4874,14 +4874,6 @@ packages:
       typescript:
         optional: true
 
-  valibot@1.0.0:
-    resolution: {integrity: sha512-1Hc0ihzWxBar6NGeZv7fPLY0QuxFMyxwYR2sF1Blu7Wq7EnremwY2W02tit2ij2VJT8HcSkHAQqmFfl77f73Yw==}
-    peerDependencies:
-      typescript: '>=5'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
@@ -5006,6 +4998,9 @@ packages:
   yn@3.1.1:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
+
+  zod@3.25.20:
+    resolution: {integrity: sha512-z03fqpTMDF1G02VLKUMt6vyACE7rNWkh3gpXVHgPTw28NPtDFRGvcpTtPwn2kMKtQ0idtYJUTxchytmnqYswcw==}
 
 snapshots:
 
@@ -7166,10 +7161,10 @@ snapshots:
       pg: 8.14.1
       postgres: 3.4.5
 
-  drizzle-valibot@0.4.0(drizzle-orm@0.41.0(@neondatabase/serverless@1.0.0)(@types/pg@8.11.11)(gel@2.0.1)(pg@8.14.1)(postgres@3.4.5))(valibot@1.0.0(typescript@5.8.2)):
+  drizzle-zod@0.8.1(drizzle-orm@0.41.0(@neondatabase/serverless@1.0.0)(@types/pg@8.11.11)(gel@2.0.1)(pg@8.14.1)(postgres@3.4.5))(zod@3.25.20):
     dependencies:
       drizzle-orm: 0.41.0(@neondatabase/serverless@1.0.0)(@types/pg@8.11.11)(gel@2.0.1)(pg@8.14.1)(postgres@3.4.5)
-      valibot: 1.0.0(typescript@5.8.2)
+      zod: 3.25.20
 
   dunder-proto@1.0.1:
     dependencies:
@@ -9319,10 +9314,6 @@ snapshots:
     optionalDependencies:
       typescript: 5.8.2
 
-  valibot@1.0.0(typescript@5.8.2):
-    optionalDependencies:
-      typescript: 5.8.2
-
   validate-npm-package-license@3.0.4:
     dependencies:
       spdx-correct: 3.2.0
@@ -9437,3 +9428,5 @@ snapshots:
   yaml@1.10.2: {}
 
   yn@3.1.1: {}
+
+  zod@3.25.20: {}

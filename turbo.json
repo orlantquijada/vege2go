@@ -1,56 +1,38 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "globalEnv": [
-    "DATABASE_URL",
-    "VITE_API_URL"
-  ],
-  "ui": "tui",
-  "tasks": {
-    "build": {
-      "persistent": false,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "build/**",
-        "dist/**"
-      ]
-    },
-    "lint": {
-      "cache": false
-    },
-    "lint:fix": {
-      "cache": false
-    },
-    "typecheck": {
-      "dependsOn": [
-        "^typecheck"
-      ]
-    },
-    "clean": {
-      "cache": false,
-      "persistent": false
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "studio": {
-      "cache": false,
-      "persistent": true
-    },
-    "deploy": {
-      "dependsOn": [
-        "^build",
-        "^deploy"
-      ],
-      "persistent": false
-    }
-  }
+	"$schema": "https://turbo.build/schema.json",
+	"globalEnv": ["DATABASE_URL", "VITE_API_URL"],
+	"ui": "tui",
+	"tasks": {
+		"build": {
+			"persistent": false,
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$", ".env*"],
+			"outputs": [".next/**", "!.next/cache/**", "build/**", "dist/**"]
+		},
+		"lint": {
+			"cache": false
+		},
+		"lint:fix": {
+			"cache": false
+		},
+		"typecheck": {
+			"dependsOn": ["^typecheck"]
+		},
+		"clean": {
+			"cache": false,
+			"persistent": false
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"studio": {
+			"cache": false,
+			"persistent": true
+		},
+		"deploy": {
+			"dependsOn": ["^build", "^deploy"],
+			"persistent": false
+		}
+	}
 }
