@@ -15,8 +15,8 @@ catalog:
   "@trpc/react-query": ^11.0.0
   "@trpc/server": ^11.0.0
   pg: ^8.14.1
-  valibot: ^1.0.0
   superjson: ^2.2.2
+  zod: ^3.25.20
 onlyBuiltDependencies:
   - "@biomejs/biome"
   - core-js-pure

@@ -35,6 +35,6 @@
 		"@repo/db": "workspace:*",
 		"@trpc/server": "catalog:",
 		"superjson": "catalog:",
-		"valibot": "catalog:"
+		"zod": "catalog:"
 	}
 }

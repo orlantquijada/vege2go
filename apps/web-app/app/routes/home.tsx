@@ -7,7 +7,7 @@ import {
 } from "@clerk/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import * as v from "valibot";
+import { z } from "zod/v4-mini";
 
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -45,9 +45,9 @@ export default function Home() {
 	);
 }
 
-const authSchema = v.object({
-	username: v.pipe(v.string(), v.nonEmpty()),
-	password: v.pipe(v.string(), v.nonEmpty()),
+const authSchema = z.object({
+	username: z.string().check(z.length(1)),
+	password: z.string().check(z.length(1)),
 });
 
 function SignUpForm() {
@@ -84,7 +84,7 @@ function SignUpForm() {
 				const formData = new FormData(e.currentTarget);
 				const data = Object.fromEntries(formData.entries());
 
-				const parsedData = v.parse(authSchema, data);
+				const parsedData = authSchema.parse(data);
 
 				signUpUser.mutateAsync(parsedData);
 			}}

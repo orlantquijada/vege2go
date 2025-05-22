@@ -1,7 +1,7 @@
 import { asc, eq } from "@repo/db";
 import { CreatePostSchema, Post } from "@repo/db/schema";
 import type { TRPCRouterRecord } from "@trpc/server";
-import * as v from "valibot";
+import { z } from "zod/v4-mini";
 
 import { t } from "../trpc.ts";
 
@@ -14,7 +14,7 @@ export const postRouter = {
 		.mutation(({ ctx, input }) =>
 			ctx.db.insert(Post).values(input).returning(),
 		),
-	id: t.procedure.input(v.string()).query(({ ctx, input }) =>
+	id: t.procedure.input(z.string()).query(({ ctx, input }) =>
 		ctx.db.query.Post.findFirst({
 			where: eq(Post.id, input),
 		}),

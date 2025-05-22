@@ -1,29 +1,29 @@
 {
-  "name": "vege2go",
-  "private": true,
-  "scripts": {
-    "clean": "turbo run clean && rm -rf .turbo node_modules",
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "api:deploy": "turbo run deploy --filter=backend",
-    "api:dev": "turbo run dev --filter=backend",
-    "api:build": "turbo run build --filter=backend",
-    "db:migrate": "pnpm -F @repo/db migrate",
-    "studio": "pnpm -F @repo/db studio",
-    "lint:fix": "turbo run lint:fix",
-    "lint": "turbo run lint",
-    "format": "biome check --write",
-    "typecheck": "turbo run typecheck",
-    "lint:ws": "pnpm dlx sherif@latest"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@turbo/gen": "^2.4.4",
-    "turbo": "^2.4.4",
-    "typescript": "catalog:"
-  },
-  "packageManager": "pnpm@10.7.0",
-  "engines": {
-    "node": ">=22"
-  }
+	"name": "vege2go",
+	"private": true,
+	"scripts": {
+		"clean": "turbo run clean && rm -rf .turbo node_modules",
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"api:deploy": "turbo run deploy --filter=backend",
+		"api:dev": "turbo run dev --filter=backend",
+		"api:build": "turbo run build --filter=backend",
+		"db:migrate": "pnpm -F @repo/db migrate",
+		"studio": "pnpm -F @repo/db studio",
+		"lint:fix": "turbo run lint:fix",
+		"lint": "turbo run lint",
+		"format": "biome check --write",
+		"typecheck": "turbo run typecheck",
+		"lint:ws": "pnpm dlx sherif@latest"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@turbo/gen": "^2.4.4",
+		"turbo": "^2.4.4",
+		"typescript": "catalog:"
+	},
+	"packageManager": "pnpm@10.7.0",
+	"engines": {
+		"node": ">=22"
+	}
 }

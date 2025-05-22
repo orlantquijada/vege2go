@@ -48,8 +48,8 @@
 	"dependencies": {
 		"@neondatabase/serverless": "^1.0.0",
 		"drizzle-orm": "^0.41.0",
-		"drizzle-valibot": "^0.4.0",
+		"drizzle-zod": "^0.8.1",
 		"pg": "catalog:",
-		"valibot": "catalog:"
+		"zod": "catalog:"
 	}
 }
