@@ -1,14 +1,18 @@
-import { formatShortDate } from "@repo/utils";
-import { v4 as uuidv4 } from "uuid";
-import { api } from "~/utils/api";
-import { server } from "~/utils/server";
-import type { Post } from "~/utils/types";
-import type { Route } from "./+types/home";
+import {
+	SignedIn,
+	SignedOut,
+	UserButton,
+	useSession,
+	useSignUp,
+} from "@clerk/react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import * as v from "valibot";
 
-export async function loader() {
-	const posts = await server.post.all();
-	return { posts };
-}
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+
+import type { Route } from "../+types/root";
 
 export function meta(_: Route.MetaArgs) {
 	return [
@@ -17,83 +21,87 @@ export function meta(_: Route.MetaArgs) {
 	];
 }
 
-export default function Home({ loaderData }: Route.ComponentProps) {
-	const { posts } = loaderData;
+export default function Home() {
+	const session = useSession();
+	const queryClient = useQueryClient();
+
+	useEffect(() => {
+		if (!session.isSignedIn) {
+			queryClient.clear();
+		}
+	}, [session.isSignedIn, queryClient.clear]);
+
 	return (
 		<main>
-			<h1 className="text-lg">Vege2Go</h1>
-
-			<Posts initialPosts={posts} />
+			<div>
+				<SignedIn>
+					<UserButton />
+				</SignedIn>
+				<SignedOut>
+					<SignUpForm />
+				</SignedOut>
+			</div>
 		</main>
 	);
 }
 
-function Posts({ initialPosts }: { initialPosts: Post[] }) {
-	const posts = api.post.all.useQuery(undefined, { initialData: initialPosts });
-	const utils = api.useUtils();
-	const createPost = api.post.create.useMutation({
-		onMutate: async (newPost) => {
-			await utils.post.all.cancel();
-			const previousPosts = utils.post.all.getData() || [];
+const authSchema = v.object({
+	username: v.pipe(v.string(), v.nonEmpty()),
+	password: v.pipe(v.string(), v.nonEmpty()),
+});
 
-			const _newPost = {
-				...newPost,
-				createdAt: new Date(),
-				updatedAt: null,
-				id: uuidv4(),
-			};
+function SignUpForm() {
+	const clerkSignup = useSignUp();
+	const signUpUser = useMutation({
+		mutationFn: async ({
+			username,
+			password,
+		}: { username: string; password: string }) => {
+			if (!clerkSignup.isLoaded) return;
 
-			utils.post.all.setData(undefined, [...previousPosts, _newPost]);
+			const res = await clerkSignup.signUp.create({ username, password });
+			if (
+				res.createdSessionId &&
+				res.status === "complete" &&
+				res.createdUserId
+			) {
+				await clerkSignup.setActive({
+					session: res.createdSessionId,
+				});
+			}
 
-			return { newPost: _newPost, previousPosts };
-		},
-		onSettled: () => {
-			utils.post.all.invalidate();
+			return res.createdUserId;
 		},
 	});
 
+	// TODO: loading and error states
 	return (
-		<section className="mt-6 flex flex-col items-start">
-			<p className="font-semibold mb-4">Posts</p>
-			<PostList posts={posts.data} />
+		<form
+			className="mx-auto max-w-md"
+			onSubmit={(e) => {
+				e.preventDefault();
 
-			<button
-				className="mt-4 h-9 px-4 bg-neutral-50 text-neutral-800 rounded-md"
-				type="button"
-				disabled={createPost.isPending}
-				aria-disabled={createPost.isPending}
-				onClick={() => {
-					createPost.mutate({
-						title: `title ${Math.ceil(Math.random() * 1000)}`,
-					});
-				}}
-			>
-				{createPost.isPending ? "loading..." : "create post"}
+				const formData = new FormData(e.currentTarget);
+				const data = Object.fromEntries(formData.entries());
+
+				const parsedData = v.parse(authSchema, data);
+
+				signUpUser.mutateAsync(parsedData);
+			}}
+		>
+			<div>
+				<Label htmlFor="username">Username</Label>
+				<Input id="username" type="text" name="username" />
+			</div>
+
+			<div>
+				<Label htmlFor="password">Password</Label>
+				<Input id="password" type="password" name="password" />
+			</div>
+
+			<button type="submit" disabled={signUpUser.isPending}>
+				Sign Up
 			</button>
-		</section>
-	);
-}
-
-function PostList({
-	posts,
-	isLoading,
-}: { posts?: Post[]; isLoading?: boolean }) {
-	if (isLoading) return <span>loading...</span>;
-	if (!posts?.length) return <span>No posts</span>;
-
-	return (
-		<ol>
-			{posts.map((post) => (
-				<PostItem key={post.id} post={post} />
-			))}
-		</ol>
-	);
-}
-
-function PostItem({ post }: { post: Post }) {
-	return (
-		<li key={post.id}>
-			<span>{post.title}</span> · <span>{formatShortDate(post.createdAt)}</span>
-		</li>
+		</form>
 	);
 }

@@ -31,6 +31,7 @@
 		"typescript": "catalog:"
 	},
 	"dependencies": {
+		"@clerk/fastify": "^2.2.7",
 		"@repo/db": "workspace:*",
 		"@trpc/server": "catalog:",
 		"superjson": "catalog:",
